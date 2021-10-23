@@ -49,6 +49,29 @@ impl Map {
             }
         }
     }
+
+    // Helper to check if a given point is within screen limits
+    pub fn in_bounds(&self, point : Point) -> bool {
+        point.x >= 0 && point.x < SCREEN_WIDTH
+        && point.y >= 0 && point.y < SCREEN_HEIGHT
+    }
+
+    // Helper to check if a given point can be entered by creature
+    pub fn can_enter_title(&self, point : Point) -> bool {
+        self.in_bounds(point)
+            && self.tiles[map_idx(point.x, point.y)]==TileType::Floor
+    }
+
+    // Helper that returns Option with nothing if we are out of bounds,
+    // otherwise we get the absolute value of the map index vec.
+    pub fn try_idx(&self, point: Point) -> Option<usize> {
+        if !self.in_bounds(point) {
+            None
+        } else {
+            Some(map_idx(point.x, point.y))
+        }
+    }
+
 }
 
 // Map indexing, returns the absolute location in the vec
