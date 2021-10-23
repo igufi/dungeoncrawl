@@ -74,7 +74,7 @@ impl MapBuilder {
         // in a tuple. We skipp the first room because it would not
         // have a valid pair.
         for (i, room) in rooms.iter().enumerate().skip(1) {
-            let prev = room[i-1].center();  // get center point of room a
+            let prev = rooms[i-1].center();  // get center point of room a
             let new = room.center();  // get center point of room b
 
             if rng.range(0,2) == 1 {
