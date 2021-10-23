@@ -44,4 +44,47 @@ impl MapBuilder {
             }
         }
     }
+
+    fn apply_vertical_tunnel(&mut self, y1:i32, y2:i32, x:i32) {
+        use std::cmp::{min, max};
+        for y in min(y1,y2) ..=max(y1,y2) { // inclusive range of max
+            if let Some(idx) = self.map.try_idx(Point::new(x, y)) {  // iterate a tunnel from start y to end y
+                self.map.tiles[idx as usize] = TileType::Floor;
+            }
+        }
+    }
+
+    fn apply_horizontal_tunnel(&mut self, x1:i32, x2:i32, y:i32) {
+        use std::cmp::{min, max};
+        for x in min(x1,x2) ..=max(x1,x2) { // inclusive range of max
+            if let Some(idx) = self.map.try_idx(Point::new(x, y)) {  // iterate a tunnel from start y to end y
+                self.map.tiles[idx as usize] = TileType::Floor;
+            }
+        }
+    }
+
+    fn build_corridors(&mut self, rng: &mut RandomNumberGenerator) {
+        let mut rooms = self.rooms.clone();
+
+        // Sort rooms by their center point to make shorter corridors
+        // each room will have a corridor leading to the next one
+        rooms.sort_by(|a,b| a.center().x.cmp(&b.center().x));
+
+        // enumerator counts items in the iterator and includes them
+        // in a tuple. We skipp the first room because it would not
+        // have a valid pair.
+        for (i, room) in rooms.iter().enumerate().skip(1) {
+            let prev = room[i-1].center();  // get center point of room a
+            let new = room.center();  // get center point of room b
+
+            if rng.range(0,2) == 1 {
+                self.apply_horizontal_tunnel(prev.x, new.x, prev.y);
+                self.apply_vertical_tunnel(prev.y, new.y, new.x);
+            } else {
+                self.apply_vertical_tunnel(prev.y, new.y, prev.x);
+                self.apply_horizontal_tunnel(prev.x, new.x, new.y);
+            }
+
+        }
+    }
 }
