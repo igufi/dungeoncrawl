@@ -87,4 +87,18 @@ impl MapBuilder {
 
         }
     }
+
+    fn new(rng: &mut RandomNumberGenerator) -> Self {
+
+        let mut mb = MapBuilder{
+            map     : Map::new(),
+            rooms   : Vec::new(),
+            player_start : Point::zero(), 
+        };
+        mb.fill(TileType::Wall);
+        mb.build_random_rooms(rng);
+        mb.build_corridors(rng);
+        mb.player_start = mb.rooms[0].center();
+        mb
+    }
 }
