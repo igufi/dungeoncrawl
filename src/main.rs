@@ -1,4 +1,5 @@
 mod map;
+mod map_builder;
 mod player;
 
 mod prelude {
@@ -7,6 +8,7 @@ mod prelude {
     pub const SCREEN_HEIGHT: i32 = 50;
     pub use crate::map::*;
     pub use crate::player::*;
+    pub use crate::map_builder::*;
 
 }
 
@@ -21,7 +23,7 @@ impl State {
     fn new() -> Self {
         Self { 
             map: Map::new(),
-            player: Player::new(  // Player always in center of screen
+            player: Player::new(  // Player starts in center of screen
                 Point::new(SCREEN_WIDTH / 2, SCREEN_HEIGHT /2)
             ),
         }
