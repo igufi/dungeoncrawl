@@ -1,4 +1,4 @@
-# dungeoncrawl
+# Dungeon Crawl
 
 Classic roguelike game written in Rust. Employs the ECS (Entity Component System). 
 
