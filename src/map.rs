@@ -28,23 +28,38 @@ impl Map {
     }
     
     // Render by row
-    pub fn render(&self, ctx: &mut BTerm) {
-        for y in 0..SCREEN_HEIGHT {
-            for x in 0..SCREEN_WIDTH {
-                let idx = map_idx(x, y); // find the absolute location on vec
+    pub fn render(&self, ctx: &mut BTerm, camera: &Camera) {
+        ctx.set_active_console(0);  // render  layer 0 (the map)
 
-                // which enum TileType is the tile under index in question?
-                match self.tiles[idx] {
-                    TileType::Floor => {
-                        ctx.set(x, y, YELLOW, BLACK, 
-                            to_cp437('.')
+        // We will only render what is visible in the camera
+        for y in camera.top_y..camera.bottom_y {            // For each row
+            for x in camera.left_x..camera.right_x {        // For each character in row
+
+                // 
+                if self.in_bounds(Point::new(x,y)) {      // only render tiles within allowed bounds
+                    let idx = map_idx(x, y);              // find the absolute location on vec
+
+                    // which enum TileType is the tile under index in question?
+                    match self.tiles[idx] {
+                        TileType::Floor => {                   // if floor type, add character '.' to coordinate
+                            ctx.set(
+                                x - camera.left_x, 
+                                y - camera.top_y,
+                                WHITE,
+                                BLACK, 
+                                to_cp437('.')
+                            );
+                        }
+                        TileType::Wall => {
+                            ctx.set(
+                                x - camera.left_x, 
+                                y - camera.top_y,
+                                WHITE,
+                                BLACK, 
+                                to_cp437('#')
                         );
                     }
-                    TileType::Wall => {
-                        ctx.set(x, y, GREEN, BLACK,
-                        to_cp437('#')
-                    );
-                    }
+                }
                 }
             }
         }
