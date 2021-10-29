@@ -1,6 +1,8 @@
 mod map;
 mod map_builder;
 mod camera;
+mod components;
+mod spawner;
 
 mod prelude {
     pub use bracket_lib::prelude::*;
@@ -12,27 +14,35 @@ mod prelude {
     pub const DISPLAY_WIDTH: i32 = SCREEN_WIDTH / 2;
     pub const DISPLAY_HEIGHT: i32 = SCREEN_HEIGHT / 2;
     pub use crate::map::*;
-    pub use crate::player::*;
+    pub use crate::components::*;
     pub use crate::map_builder::*;
     pub use crate::camera::*;
+    pub use crate::spawner::*;
 
 }
 
 use prelude::*;
 
 struct State {
-    map: Map,
-    camera: Camera,
+    ecs: World,
+    resources: Resources,
+    systems: Schedule,
 }
 
 impl State {
     fn new() -> Self {
+        let mut ecs = World::default();
+        let mut resources = Resources::default();
         let mut rng = RandomNumberGenerator::new();
         let map_builder = MapBuilder::new(&mut rng);
+        spawn_player(&mut ecs, map_builder.player_start);   // we will create the player only once
+        resources.insert(map_builder.map);      // store the map that map_builder makes as resource
+        resources.insert(Camera::new(map_builder.player_start));
 
         Self { 
-            map: map_builder.map,
-            camera: Camera::new(map_builder.player_start),
+            ecs,
+            resources,
+            systems: build_scheduler()  //TODO
         }
     }
 }
