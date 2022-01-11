@@ -19,3 +19,5 @@ by Chris Hamons[4].
 [3] https://opengameart.org/content/fantasy-sword-set
 
 [4] https://github.com/crawl/tiles
+
+.
