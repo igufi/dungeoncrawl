@@ -13,6 +13,9 @@ Monster graphics are from the game Dungeon Crawl Stone Soup (CC0 license), packa
 by Chris Hamons[4].
 
 [1] https://opengameart.org/content/unfinished-dungeon-tileset
+
 [2] https://opengameart.org/content/fantasy-magic-set
+
 [3] https://opengameart.org/content/fantasy-sword-set
+
 [4] https://github.com/crawl/tiles
