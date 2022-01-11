@@ -3,6 +3,7 @@ mod map_builder;
 mod camera;
 mod components;
 mod spawner;
+mod systems;
 
 mod prelude {
     pub use bracket_lib::prelude::*;
@@ -18,6 +19,7 @@ mod prelude {
     pub use crate::map_builder::*;
     pub use crate::camera::*;
     pub use crate::spawner::*;
+    pub use crate::systems::*;  // a multi-file module folder
 
 }
 
@@ -25,7 +27,7 @@ use prelude::*;
 
 struct State {
     ecs: World,
-    resources: Resources,
+    resources: Resources,  // no longer needed with Legion ecs?
     systems: Schedule,
 }
 
@@ -41,7 +43,7 @@ impl State {
 
         Self { 
             ecs,
-            resources,
+            resources,  // no longer needed with Legion ecs?
             systems: build_scheduler()  //TODO
         }
     }
@@ -53,9 +55,14 @@ impl GameState for State {
         ctx.cls();
         ctx.set_active_console(1);
         ctx.cls();
+        self.resources.insert(ctx.key);  // Stores keyboard state
+        self.systems.execute(&mut self.ecs, &mut self.resources);  // &mut borrows are exclusive
+        // TODO - Render Draw Buffer
     }
 }
 
+
+// continue from page 110 (123 on pdf)
 
 fn main() -> BError {
     let context = BTermBuilder::new()       // creastes new, *uncofigured* session
