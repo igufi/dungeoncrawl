@@ -12,6 +12,8 @@ Weaponry is from Melle’s Fantasy Sword Set[3].
 Monster graphics are from the game Dungeon Crawl Stone Soup (CC0 license), packaged
 by Chris Hamons[4].
 
+Very much a work-in-progress for now.
+
 [1] https://opengameart.org/content/unfinished-dungeon-tileset
 
 [2] https://opengameart.org/content/fantasy-magic-set
